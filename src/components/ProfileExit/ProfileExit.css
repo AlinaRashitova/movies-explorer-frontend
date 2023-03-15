@@ -1,0 +1,19 @@
+.profile-exit {
+  text-align: center;
+}
+
+.profile-exit__button {
+  background-color: transparent;
+  border: none;
+  color: #EE3465;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  padding: 0;
+}
+
+.profile-exit__button:hover {
+  opacity: .6;
+}

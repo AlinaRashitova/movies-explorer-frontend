@@ -1,0 +1,19 @@
+.greeting {
+  margin: 50px 0 80px;
+  text-align: center;
+}
+
+.greeting__title {
+  color: #000;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 19px;
+  text-align: center;
+}
+
+@media screen and (min-width: 600px) {
+  .greeting__title {
+    line-height: 29px;
+  }
+}

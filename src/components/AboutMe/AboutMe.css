@@ -1,0 +1,140 @@
+.student {
+  padding: 70px 14px;
+  background-color: #fff;
+}
+
+.student__title {
+  margin: 0 0 60px;
+}
+
+.student__info {
+  display: grid;
+  grid-template-areas:
+    "photo"
+    "info-text"
+    "info-link";
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin: 0 0 70px;
+}
+
+.student__photo {
+  grid-area: photo;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: center;
+  height: 352px;
+  width: 100%;
+  justify-self: right;
+}
+
+.student__info_text {
+  grid-area: info-text;
+}
+
+.student__info_name {
+  margin: 0 0 20px;
+  color: #000;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: -0.04em;
+}
+
+.student__info_status {
+  margin: 0 0 20px;
+  color: #000;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.student__info_description {
+  color: #000;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.student__info_link {
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+}
+
+.student__info_link:hover {
+  opacity: .6;
+}
+
+@media screen and (min-width: 600px) {
+  .student {
+    padding: 90px 50px;
+  }
+
+  .student__info {
+    grid-template-areas:
+      "info-text photo"
+      "info-link photo";
+    grid-template-columns: 400fr 270fr;
+    row-gap: 84px;
+    column-gap: 40px;
+    margin: 0 0 90px;
+  }
+
+  .student__info_name {
+    margin: 0 0 16px;
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .student__info_status {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .student__photo {
+    height: 307px;
+    width: 255px;
+  }
+
+  .student__info_description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .student {
+    padding: 110px 70px;
+  }
+
+  .student__info {
+    row-gap: 95px;
+    margin: 0 0 100px;
+  }
+
+  .student__info_name {
+    margin: 0 0 18px;
+    font-size: 50px;
+    line-height: 58px;
+  }
+
+  .student__info_status {
+    margin: 0 0 26px;
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  .student__info_description {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .student__photo {
+    height: 327px;
+    width: 270px;
+  }
+}

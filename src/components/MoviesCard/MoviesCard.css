@@ -1,0 +1,85 @@
+.movie {
+  width: 100%;
+}
+
+.movie__image {
+  width: 100%;
+  object-fit: cover;
+  height: 168px;
+}
+
+.movie__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.movie__title {
+  color: #000;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  max-width: 240px;
+}
+
+.movie__button {
+  background-image: url(../../images/like-button.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color:#F9F9F9;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+  justify-self: center;
+}
+
+.movie__button:hover {
+  opacity: .6;
+}
+
+.movie__button_liked {
+  background-image: url(../../images/like-button_active.svg);
+}
+
+.movie__button_saved {
+  background-image: url(../../images/delete-button.svg);
+}
+
+.movie__duration {
+  border-top: 1px solid #E8E8E8;
+  padding-top: 6px;
+  margin: 0;
+  color: #A0A0A0;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+}
+
+@media screen and (min-width: 600px) {
+  .movie__image {
+    height: 190px;
+  }
+
+  .movie__title {
+    font-size: 13px;
+    line-height: 16px;
+    max-width: 295px;
+  }
+
+  .movie__duration {
+    font-size: 11px;
+    line-height: 13px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .movie__image {
+    height: 151px;
+  }
+
+  .movie__title {
+    max-width: 226px;
+  }
+}

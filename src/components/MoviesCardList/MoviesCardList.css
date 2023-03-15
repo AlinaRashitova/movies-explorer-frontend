@@ -1,0 +1,52 @@
+.movies {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 40px 0;
+  gap: 34px;
+  align-items: center;
+}
+
+.movies__button {
+  color: #000;
+  min-width: 300px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  text-align: center;
+  padding: 11px 50px 9px;
+  border-radius: 6px;
+  background-color: #F9F9F9;
+  border: none;
+}
+
+.movies__button:hover {
+  opacity: .6;
+}
+
+@media screen and (min-width: 600px) {
+  .movies {
+    padding: 70px 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(339px, 1fr));
+    gap: 30px;
+  }
+
+  .movies__button {
+    min-width: 708px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .movies {
+    grid-template-columns: repeat(4, minmax(270px, 1fr));
+    row-gap: 20px;
+    column-gap: 38px;
+  }
+
+  .movies__button {
+    min-width: 1140px;
+  }
+}

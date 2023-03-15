@@ -1,0 +1,32 @@
+.submit-button {
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  text-align: center;
+  background-color: #FF6838;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 15px 0;
+  width: 100%;
+  align-self: end;
+}
+
+.submit-button:hover {
+  opacity: .6;
+}
+
+.submit-button__disabled {
+  background-color: #E8E8E8;
+}
+
+.submit-button__disabled:hover {
+  opacity: 1;
+}
+
+@media screen and (min-width: 600) {
+  .submit-button {
+    font-size: 14px;
+  }
+}
