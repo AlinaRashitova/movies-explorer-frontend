@@ -11,8 +11,8 @@
   color: #000;
   max-width: 1280px;
   min-width: 320px;
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
   z-index: 0;
 
   -webkit-font-smoothing: antialiased;

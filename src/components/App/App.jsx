@@ -16,7 +16,7 @@ import Footer from "../Footer/Footer";
 import { useState } from "react";
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const location = useLocation();
 

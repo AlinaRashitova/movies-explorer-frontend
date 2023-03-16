@@ -3,11 +3,12 @@ import account from "../../images/account.svg";
 import { Link, useLocation } from "react-router-dom";
 import { paths } from "../../utils/config";
 
-const Navigation = ({ loggedIn, isMenuOpen }) => {
+const Navigation = ({ loggedIn, isMenuOpen, handleCloseMenu }) => {
   const location = useLocation();
 
-  const navigationClassName = `navigation__container ${loggedIn && 'navigation__container_logged-in'}
-  navigation__container_hidden ${isMenuOpen && 'navigation__container_opened'}`;
+  let navigationClassName = 'navigation__container ';
+  if (loggedIn) navigationClassName += 'navigation__container_hidden navigation__container_logged-in';
+  if (isMenuOpen) navigationClassName += 'navigation__container_hidden navigation__container_opened'
 
   const links = !loggedIn ? (
     <>
@@ -22,15 +23,15 @@ const Navigation = ({ loggedIn, isMenuOpen }) => {
           to={paths.main}>
           Главная
         </Link>}
-      <Link
-        className={`navigation__link ${location.pathname === paths.movies && 'navigation__link_active'}`}
-        to={paths.movies}>
-        Фильмы
-      </Link>
-      <Link className={`navigation__link ${location.pathname === paths.savedMovies && 'navigation__link_active'}`}
-        to={paths.savedMovies}>
-        Сохраненные фильмы
-      </Link>
+        <Link
+          className={`navigation__link ${location.pathname === paths.movies && 'navigation__link_active'}`}
+          to={paths.movies}>
+          Фильмы
+        </Link>
+        <Link className={`navigation__link navigation__link_saved-movies ${location.pathname === paths.savedMovies && 'navigation__link_active'}`}
+          to={paths.savedMovies}>
+          Сохраненные фильмы
+        </Link>
       <Link className={`navigation__link navigation__link_profile ${location.pathname === paths.profile && 'navigation__link_active'}`}
         to={paths.profile}>
         <img src={account} alt="Профиль" />
@@ -40,7 +41,7 @@ const Navigation = ({ loggedIn, isMenuOpen }) => {
   )
 
   return (
-    <nav className={navigationClassName}>
+    <nav className={navigationClassName} onClick={handleCloseMenu}>
       {links}
     </nav >
   )

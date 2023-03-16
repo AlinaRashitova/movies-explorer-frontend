@@ -9,7 +9,8 @@ const Input = (props) => {
       >
         {props.label}
       </label>
-      <input type={props.type}
+      <input
+        type={props.type}
         className="input__field"
         required={props.required}
         disabled={props.disabled}
@@ -17,6 +18,9 @@ const Input = (props) => {
         name={props.name}
         placeholder={props.placeholder}
         id={props.id}
+        value={props.value}
+        onBlur={props.onBlur}
+        onChange={props.onChange}
       />
       <span className="input__message">{props.validationMessage}</span>
     </fieldset>
