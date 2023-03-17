@@ -13,6 +13,8 @@ const Input = (props) => {
         type={props.type}
         className="input__field"
         required={props.required}
+        minLength={props.minLength}
+        maxLength={props.maxLength}
         disabled={props.disabled}
         autoComplete={props.autoComplete}
         name={props.name}

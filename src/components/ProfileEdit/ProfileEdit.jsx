@@ -19,6 +19,8 @@ const ProfileEdit = () => {
               id="name"
               name="name"
               value="Виталий"
+              minLength="2"
+              maxLength="20"
               placeholder="Имя" />
           </fieldset>
           <span className="profile-edit__input-error-message"></span>

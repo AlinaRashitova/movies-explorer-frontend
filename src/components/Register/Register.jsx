@@ -38,7 +38,7 @@ const Register = () => {
 
   const passwordHandler = (e) => {
     setPassword(e.target.value)
-    if (e.target.value.length < 3 || e.target.value.length > 10) {
+    if (e.target.value.length < 4 || e.target.value.length > 10) {
       setPasswordError(messages.passwordInputError)
       if (!e.target.value) {
         setPasswordError(messages.passwordInputError)
@@ -85,6 +85,8 @@ const Register = () => {
           required={true}
           autoComplete="on"
           name="name"
+          minLength="2"
+          maxLength="20"
           placeholder="Введите имя"
           id="profile-name"
           label="Имя"
@@ -111,6 +113,8 @@ const Register = () => {
           required={true}
           autoComplete="on"
           name="password"
+          minLength="4"
+          maxLength="10"
           placeholder="Введите пароль"
           id="profile-password"
           label="Пароль"

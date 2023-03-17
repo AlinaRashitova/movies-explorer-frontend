@@ -31,6 +31,7 @@
   top: 0;
   z-index: 1;
   background-color: #465DFF;
+  align-items: center;
 }
 
 @media screen and (min-width: 1000px) {

@@ -44,7 +44,7 @@
   right: -100%;
   top: 0;
   z-index: 3;
-  background-color: #fff;
+  background-color: transparent;
   animation: closeMenu 1s forwards;
   display: grid;
   grid-template-rows: repeat(3, 22px) 1fr;
@@ -75,6 +75,7 @@
   animation: openMenu 1s forwards;
   right: 0;
   opacity: 1;
+  background-color: #fff;
 }
 
 @media screen and (min-width: 600px) {
@@ -119,7 +120,7 @@
   margin-top: 600px;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1000px) {
   .navigation__link_profile {
     margin-top: 0;
   }

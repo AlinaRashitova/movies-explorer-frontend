@@ -35,7 +35,7 @@ const Login = () => {
 
   const passwordHandler = (e) => {
     setPassword(e.target.value)
-    if (e.target.value.length < 3 || e.target.value.length > 10) {
+    if (e.target.value.length < 4 || e.target.value.length > 10) {
       setPasswordError(messages.passwordInputError)
       if (!e.target.value) {
         setPasswordError(messages.passwordInputError)
@@ -78,6 +78,8 @@ const Login = () => {
         <Input
           type="password"
           required={true}
+          minLength="4"
+          maxLength="10"
           autoComplete="on"
           name="password"
           placeholder="Введите пароль"

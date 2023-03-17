@@ -28,14 +28,15 @@ const SearchForm = ({ placeholder, buttonName }) => {
           type="text"
           placeholder={placeholder}
           name="movie"
+          minLength="2"
           required
           value={searchRequest.text}
           onChange={handleChangeInput}
         />
         <button
           className="search__button"
-          type="submit"
-        >{buttonName}
+          type="submit">
+          {buttonName}
         </button>
       </fieldset>
       <FilterCheckbox
