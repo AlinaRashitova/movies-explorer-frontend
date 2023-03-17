@@ -1,4 +1,4 @@
-.header__burger {
+.burger {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,29 +13,29 @@
   z-index: 3;
 }
 
-.header__burger:hover {
+.burger:hover {
   opacity: .6;
 }
 
 @media screen and (min-width: 1000px) {
-  .header__burger {
+  .burger {
     display: none;
   }
 }
 
-.header__burger_active .header__burger_span:nth-of-type(1) {
+.burger_active .burger__span:nth-of-type(1) {
   transform: translateY(20px) rotate(-45deg);
 }
 
-.header__burger_active .header__burger_span:nth-of-type(2) {
+.burger_active .burger__span:nth-of-type(2) {
   display: none;
 }
 
-.header__burger_active .header__burger_span:nth-of-type(3) {
+.burger_active .burger__span:nth-of-type(3) {
   transform: translateY(10px) rotate(45deg);
 }
 
-.header__burger_span {
+.burger__span {
   width: 28px;
   height: 3px;
   background-color: #000;

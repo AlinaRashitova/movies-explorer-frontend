@@ -1,6 +1,7 @@
 import "./Navigation.css";
 import account from "../../images/account.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { paths } from "../../utils/config";
 
 const Navigation = ({ loggedIn, isMenuOpen, handleCloseMenu }) => {
@@ -8,7 +9,7 @@ const Navigation = ({ loggedIn, isMenuOpen, handleCloseMenu }) => {
 
   let navigationClassName = 'navigation__container ';
   if (loggedIn) navigationClassName += 'navigation__container_hidden navigation__container_logged-in';
-  if (isMenuOpen) navigationClassName += 'navigation__container_hidden navigation__container_opened'
+  if (isMenuOpen) navigationClassName += 'navigation__container_hidden navigation__container_opened';
 
   const links = !loggedIn ? (
     <>
@@ -23,6 +24,7 @@ const Navigation = ({ loggedIn, isMenuOpen, handleCloseMenu }) => {
           to={paths.main}>
           Главная
         </Link>}
+      <div className="navigation__links">
         <Link
           className={`navigation__link ${location.pathname === paths.movies && 'navigation__link_active'}`}
           to={paths.movies}>
@@ -32,6 +34,7 @@ const Navigation = ({ loggedIn, isMenuOpen, handleCloseMenu }) => {
           to={paths.savedMovies}>
           Сохраненные фильмы
         </Link>
+      </div>
       <Link className={`navigation__link navigation__link_profile ${location.pathname === paths.profile && 'navigation__link_active'}`}
         to={paths.profile}>
         <img src={account} alt="Профиль" />

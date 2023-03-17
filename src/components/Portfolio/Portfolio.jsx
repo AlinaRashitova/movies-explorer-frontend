@@ -11,36 +11,32 @@ const Portfolio = () => {
             href="https://github.com/AlinaRashitova/how-to-learn"
             className="portfolio__link"
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Статичный сайт
+            <img src={linkLogo} alt="Ссылка" className="portfolio__link_logo" />
           </a>
-          <img src={linkLogo} alt="Ссылка" className="portfolio__link_logo"/>
         </li>
         <li className="portfolio__links_item">
           <a
             href="https://github.com/AlinaRashitova/russian-travel"
             className="portfolio__link"
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Адаптивный сайт
+            <img src={linkLogo} alt="Ссылка" className="portfolio__link_logo" />
           </a>
-          <img src={linkLogo} alt="Ссылка" className="portfolio__link_logo"/>
         </li>
         <li className="portfolio__links_item">
           <a
             href="https://github.com/AlinaRashitova/react-mesto-api-full"
             className="portfolio__link"
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Одностраничное приложение
+            <img src={linkLogo} alt="Ссылка" className="portfolio__link_logo" />
           </a>
-          <img src={linkLogo} alt="Ссылка" className="portfolio__link_logo"/>
         </li>
       </ul>
-
     </section>
   )
 }

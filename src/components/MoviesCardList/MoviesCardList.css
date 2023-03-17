@@ -2,9 +2,27 @@
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 40px 10px;
-  gap: 34px;
+  padding: 40px 10px 0;
+  row-gap: 34px;
   align-items: center;
+}
+
+@media screen and (min-width: 800px) {
+  .movies {
+    display: grid;
+    padding: 70px 30px;
+    grid-template-columns: repeat(2, minmax(339px, 1fr));
+    gap: 30px;
+  }
+}
+
+@media screen and (min-width: 1290px) {
+  .movies {
+    grid-template-columns: repeat(4, minmax(270px, 1fr));
+    row-gap: 20px;
+    column-gap: 38px;
+    padding-left: 50px;
+  }
 }
 
 .movies__button {
@@ -16,7 +34,7 @@
   font-weight: 500;
   line-height: 15px;
   text-align: center;
-  padding: 11px 50px 9px;
+
   border-radius: 6px;
   background-color: #F9F9F9;
   border: none;
@@ -26,27 +44,13 @@
   opacity: .6;
 }
 
-@media screen and (min-width: 600px) {
-  .movies {
-    padding: 70px 30px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(339px, 1fr));
-    gap: 30px;
-  }
-
+@media screen and (min-width: 768px) {
   .movies__button {
     min-width: 708px;
   }
 }
 
-@media screen and (min-width: 1000px) {
-  .movies {
-    grid-template-columns: repeat(4, minmax(270px, 1fr));
-    row-gap: 20px;
-    column-gap: 38px;
-    padding-left: 50px;
-  }
-
+@media screen and (min-width: 1200px) {
   .movies__button {
     min-width: 1140px;
   }

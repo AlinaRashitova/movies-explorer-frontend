@@ -1,11 +1,18 @@
 .movie {
   width: 100%;
+  max-width: 300px;
 }
 
 .movie__image {
+  max-width: 300px;
   width: 100%;
   object-fit: cover;
   height: 168px;
+}
+
+.movie__image:hover {
+  cursor: pointer;
+  opacity: .6;
 }
 
 .movie__container {
@@ -33,6 +40,7 @@
   padding: 0;
   border-radius: 50%;
   justify-self: center;
+  align-self: center;
 }
 
 .movie__button:hover {
@@ -57,9 +65,14 @@
   font-weight: 400;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 768px) {
+  .movie {
+    max-width: 339px;
+  }
+
   .movie__image {
     height: 190px;
+    max-width: 339px;
   }
 
   .movie__title {
@@ -74,9 +87,14 @@
   }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1280px) {
+  .movie {
+    max-width: 270px;
+  }
+
   .movie__image {
     height: 151px;
+    max-width: 270px;
   }
 
   .movie__title {

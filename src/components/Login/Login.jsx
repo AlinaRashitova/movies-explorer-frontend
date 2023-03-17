@@ -3,6 +3,7 @@ import "./Login.css";
 import Logo from "../Logo/Logo";
 import Greeting from "../Greeting/Greeting";
 import Input from "../Input/Input";
+import SubmitButton from "../SubmitButton/SubmitButton";
 import { useEffect, useState } from "react";
 import { messages, emailRegExp } from "../../utils/config";
 
@@ -26,7 +27,7 @@ const Login = () => {
   const emailHandler = (e) => {
     setEmail(e.target.value)
     if (!emailRegExp.test(String(e.target.value).toLocaleLowerCase())) {
-      setEmailError(messages.inputError)
+      setEmailError(messages.emailInputError)
     } else {
       setEmailError('')
     }
@@ -35,7 +36,7 @@ const Login = () => {
   const passwordHandler = (e) => {
     setPassword(e.target.value)
     if (e.target.value.length < 3 || e.target.value.length > 10) {
-      setPasswordError(messages.inputError)
+      setPasswordError(messages.passwordInputError)
       if (!e.target.value) {
         setPasswordError(messages.passwordInputError)
       }

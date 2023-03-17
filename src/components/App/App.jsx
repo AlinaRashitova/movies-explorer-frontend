@@ -16,7 +16,7 @@ import Footer from "../Footer/Footer";
 import { useState } from "react";
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
 
   const location = useLocation();
 
@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <div className="app">
-      {isHeaderVisible && <Header loggedIn={loggedIn} />}
+      {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
 
       <main>
         <Routes>

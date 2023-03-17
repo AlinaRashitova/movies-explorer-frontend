@@ -2,11 +2,11 @@ import './Burger.css';
 
 const Burger = ({ isMenuOpen, handleToggleMenu }) => {
   return (
-    <button className={`header__burger ${isMenuOpen && 'header__burger_active'}`}
+    <button className={`burger ${isMenuOpen && 'burger_active'}`}
       onClick={handleToggleMenu}>
-      <span className="header__burger_span"></span>
-      <span className="header__burger_span"></span>
-      <span className="header__burger_span"></span>
+      <span className="burger__span"></span>
+      <span className="burger__span"></span>
+      <span className="burger__span"></span>
     </button>
   )
 }

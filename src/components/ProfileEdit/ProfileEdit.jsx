@@ -18,6 +18,7 @@ const ProfileEdit = () => {
               required="true"
               id="name"
               name="name"
+              value="Виталий"
               placeholder="Имя" />
           </fieldset>
           <span className="profile-edit__input-error-message"></span>
@@ -34,6 +35,7 @@ const ProfileEdit = () => {
               required="true"
               id="email"
               name="email"
+              value="pochta@yandex.ru"
               placeholder="Email" />
           </fieldset>
           <span className="profile-edit__input-error-message"></span>

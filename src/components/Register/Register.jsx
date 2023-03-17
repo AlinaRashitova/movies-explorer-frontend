@@ -30,7 +30,7 @@ const Register = () => {
   const emailHandler = (e) => {
     setEmail(e.target.value)
     if (!emailRegExp.test(String(e.target.value).toLocaleLowerCase())) {
-      setEmailError(messages.inputError)
+      setEmailError(messages.emailInputError)
     } else {
       setEmailError('')
     }
@@ -39,7 +39,7 @@ const Register = () => {
   const passwordHandler = (e) => {
     setPassword(e.target.value)
     if (e.target.value.length < 3 || e.target.value.length > 10) {
-      setPasswordError(messages.inputError)
+      setPasswordError(messages.passwordInputError)
       if (!e.target.value) {
         setPasswordError(messages.passwordInputError)
       }
@@ -51,7 +51,7 @@ const Register = () => {
   const nameHandler = (e) => {
     setName(e.target.value)
     if (e.target.value.length < 2) {
-      setNameError(messages.inputError)
+      setNameError(messages.nameInputError)
       if (!e.target.value) {
         setNameError(messages.nameInputError)
       }
