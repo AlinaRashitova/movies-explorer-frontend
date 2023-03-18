@@ -23,23 +23,23 @@
   }
 }
 
-.navigation__container {
+.navigation {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
 @media screen and (min-width: 600px) {
-  .navigation__container {
+  .navigation {
     gap: 30px;
   }
 }
 
-.navigation__container_logged-in {
+.navigation_logged-in {
   gap: 20px;
 }
 
-.navigation__container_hidden {
+.navigation_hidden {
   position: fixed;
   right: -100%;
   top: 0;
@@ -58,7 +58,7 @@
 }
 
 @media screen and (min-width: 1000px) {
-  .navigation__container_hidden {
+  .navigation_hidden {
     position: relative;
     right: 0;
     height: auto;
@@ -71,7 +71,7 @@
   }
 }
 
-.navigation__container_opened {
+.navigation_opened {
   animation: openMenu 1s forwards;
   right: 0;
   opacity: 1;
@@ -79,7 +79,7 @@
 }
 
 @media screen and (min-width: 600px) {
-  .navigation__container_opened {
+  .navigation_opened {
     max-width: 67.7%;
   }
 }

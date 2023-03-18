@@ -3,7 +3,7 @@
   padding: 25px 53px;
 }
 
-.project-nav__links_list {
+.project-nav__links-list {
   display: flex;
   justify-content: center;
   list-style: none;
@@ -12,11 +12,11 @@
   padding: 0;
 }
 
-.project-nav__links_item {
+.project-nav__links-item {
   margin: 0 25px 0 0;
 }
 
-.project-nav__links_item:last-child{
+.project-nav__links-item:last-child{
   margin-right: 0;
 }
 
@@ -34,7 +34,7 @@
 }
 
 @media screen and (min-width: 600) {
-  .project-nav__links_item {
+  .project-nav__links-item {
     margin: 0 40px 0 0;
   }
 

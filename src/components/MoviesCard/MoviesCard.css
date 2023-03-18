@@ -65,7 +65,7 @@
   font-weight: 400;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 800px) {
   .movie {
     max-width: 339px;
   }
@@ -87,7 +87,7 @@
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1000px) {
   .movie {
     max-width: 270px;
   }

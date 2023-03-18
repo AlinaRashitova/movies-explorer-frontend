@@ -2,16 +2,15 @@
 @import url(../../vendor/fonts.css);
 
 .app {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   margin: 0 auto;
   padding: 0;
   font-family: 'Inter', arial, sans-serif;
   background-color: #fff;
   color: #000;
-  max-width: 1280px;
-  min-width: 320px;
   width: 100%;
+  min-width: 320px;
+  max-width: 1280px;
   min-height: 100vh;
   z-index: 0;
 
@@ -21,4 +20,12 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+}
+
+.app__container {
+  min-width: 320px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
 }

@@ -7,9 +7,9 @@ import { paths } from "../../utils/config";
 const Navigation = ({ loggedIn, isMenuOpen, handleCloseMenu }) => {
   const location = useLocation();
 
-  let navigationClassName = 'navigation__container ';
-  if (loggedIn) navigationClassName += 'navigation__container_hidden navigation__container_logged-in';
-  if (isMenuOpen) navigationClassName += 'navigation__container_hidden navigation__container_opened';
+  let navigationClassName = 'navigation ';
+  if (loggedIn) navigationClassName += 'navigation_hidden navigation_logged-in';
+  if (isMenuOpen) navigationClassName += 'navigation_hidden navigation_opened';
 
   const links = !loggedIn ? (
     <>

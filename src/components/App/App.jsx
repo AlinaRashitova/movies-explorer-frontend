@@ -21,9 +21,9 @@ const App = () => {
   const location = useLocation();
 
   const isHeaderVisible = (location.pathname === paths.main) ||
-  (location.pathname === paths.movies) ||
-  (location.pathname === paths.savedMovies) ||
-  (location.pathname === paths.profile);
+    (location.pathname === paths.movies) ||
+    (location.pathname === paths.savedMovies) ||
+    (location.pathname === paths.profile);
 
   const isFooterVisible = (location.pathname === paths.main) ||
     (location.pathname === paths.movies) ||
@@ -31,29 +31,30 @@ const App = () => {
 
   return (
     <div className="app">
-      {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
+      <div className="app__container">
+        {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
 
-      <main>
-        <Routes>
-          <Route path={paths.main} element={<Main />} />
+        <main>
+          <Routes>
+            <Route path={paths.main} element={<Main />} />
 
-          <Route path={paths.movies} element={<Movies />} />
+            <Route path={paths.movies} element={<Movies />} />
 
-          <Route path={paths.savedMovies} element={<SavedMovies />} />
+            <Route path={paths.savedMovies} element={<SavedMovies />} />
 
-          <Route path={paths.profile} element={<Profile />} />
+            <Route path={paths.profile} element={<Profile />} />
 
-          <Route path={paths.signIn} element={<Login />} />
+            <Route path={paths.signIn} element={<Login />} />
 
-          <Route path={paths.signUp} element={<Register />} />
+            <Route path={paths.signUp} element={<Register />} />
 
-          <Route path="*" element={<PageNotFound />} />
+            <Route path="*" element={<PageNotFound />} />
 
-        </Routes>
-      </main>
+          </Routes>
+        </main>
 
-      {isFooterVisible && <Footer />}
-
+        {isFooterVisible && <Footer />}
+      </div>
     </div>
   )
 }

@@ -10,20 +10,21 @@
   justify-content: space-between;
   gap: 10px;
   width: 100%;
-  padding: 80px 14px 44px;
+  padding: 80px 0 44px 10px;
   align-items: center;
   border: none;
+  margin: 0;
 }
 
 @media screen and (min-width: 600px) {
   .search-form {
-    padding: 80px 20px 30px 30px;
+    padding-left: 10px;
   }
 }
 
 @media screen and (min-width: 1000px) {
   .search-form {
-    padding: 80px 75px 22px 60px;
+    padding: 80px 75px 22px 70px;
   }
 }
 
@@ -35,7 +36,6 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-
   width: 100%;
   padding: 13px 0 13px 16px;
 }

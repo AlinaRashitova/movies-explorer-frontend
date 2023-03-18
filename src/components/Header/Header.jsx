@@ -13,7 +13,7 @@ const Header = ({ isLoggedIn }) => {
   const handleToggleMenu = () => setIsMenuOpen((state) => !state);
   const handleCloseMenu = () => setIsMenuOpen(false);
 
-  const headerClassName = (location.pathname === paths.main) ? 'header' : 'header header__logged-in';
+  const headerClassName = (location.pathname === paths.main) ? 'header' : 'header header_logged-in';
 
   return (
     <header className={headerClassName}>
