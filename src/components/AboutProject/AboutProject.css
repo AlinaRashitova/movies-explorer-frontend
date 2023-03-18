@@ -1,0 +1,130 @@
+.project {
+  background-color: #fff;
+  padding: 70px 18px;
+}
+
+.project__title {
+  margin: 0 0 60px;
+}
+
+.project__list {
+  margin: 0 0 60px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  list-style: none;
+}
+
+.project__list_subtitle {
+  color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+  margin: 0 0 16px;
+}
+
+.project__list_text {
+  color: #000;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.project__time-line {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas:
+  "backend-time frontend-time"
+  "backend-title frontend-title";
+  row-gap: 10px;
+}
+
+.project__stage-time {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  margin: 0;
+  padding: 10px;
+}
+
+.project__stage-time_backend {
+  grid-area: backend-time;
+  color: #000;
+  background-color: #2BE080;
+}
+
+.project__stage-time_frontend {
+  grid-area: frontend-time;
+  color: #000;
+  background-color: #F2F2F2;
+}
+
+.project__stage-title {
+  color: #A0A0A0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  margin: 0;
+}
+
+.project__stage-title_backend {
+  grid-area: backend-title;
+}
+
+.project__stage-title_frontend {
+  grid-area: frontend-title;
+}
+
+@media screen and (min-width: 600px) {
+  .project {
+    padding: 90px 50px;
+  }
+
+  .project__title {
+    margin: 0 0 70px;
+  }
+
+  .project__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project__list_subtitle {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .project__list_text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .project__stage-time {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .project__stage-title {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .project {
+    padding: 110px 70px;
+  }
+
+  .project__list_text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .project__stage-title {
+    font-weight: 500;
+  }
+}
