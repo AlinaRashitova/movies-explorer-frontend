@@ -4,9 +4,7 @@ import SectionTitle from "../SectionTitle/SectionTitle"
 const Techs = () => {
   return (
     <section className="techs" id="techs">
-      <div className="techs__title">
         <SectionTitle title="Технологии" />
-      </div>
       <div className="techs__description">
         <p className="techs__description_title">7&nbsp;технологий</p>
         <p className="techs__description_text">

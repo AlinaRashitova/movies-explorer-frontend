@@ -6,9 +6,7 @@ import Portfolio from '../Portfolio/Portfolio';
 const AboutMe = () => {
   return (
     <section className="student" id="about-me">
-      <div className="student__title">
         <SectionTitle title="Студент" />
-      </div>
       <div className="student__info">
         <img
           src={studentPhoto}

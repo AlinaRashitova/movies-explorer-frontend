@@ -4,9 +4,7 @@ import SectionTitle from "../SectionTitle/SectionTitle";
 const AboutProject = () => {
   return (
     <section className="project" id="about-project">
-      <div className="project__title">
         <SectionTitle title="О проекте" />
-      </div>
       <ul className="project__list">
         <li className="project__list_item">
           <p className="project__list_subtitle">Дипломный проект включал 5&nbsp;этапов</p>
