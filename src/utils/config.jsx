@@ -8,13 +8,12 @@ export const paths = {
 }
 
 export const messages = {
-  emailInputError: 'Введите корректный email',
-  nameInputError: 'Имя должно содержать минимум 2 символа',
-  passwordInputError: 'Пароль должен содержать минимум 4 символа',
-  inputError: 'Что-то пошло не так...',
+  loginError: 'Неправильно указан email или пароль',
+  registrationError: 'При регистрации пользователя произошла ошибка',
+  successMessage: 'Данные успешно обновлены',
+  emailError: 'Пользователь с таким email уже существует',
 }
 
-export const nameRegExp = / ^[A-zА-яё\s-]{2,30}$/
-export const passwordRegExp = / ^.{4,30}$ /;
-export const emailRegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+export const MAIN_URL = 'http://localhost:3000';
+export const MOVIES_URL = 'https://api.nomoreparties.co/beatfilm-movies';
+ // https://api.movie.alinarashitova.nomoredomains.work

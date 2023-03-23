@@ -9,7 +9,6 @@ const MoviesCardList = ({ moviesArray, savedMovies }) => {
           <MoviesCard id={item.id} movie={item} savedMovies={savedMovies} isLiked={true}/>
         ))}
       </div>
-      {!savedMovies && <button className="movies__button">Ещё</button>}
     </section>
   )
 }

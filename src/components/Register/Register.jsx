@@ -2,130 +2,82 @@ import { Link } from "react-router-dom";
 import "./Register.css";
 import Logo from "../Logo/Logo";
 import Greeting from "../Greeting/Greeting";
-import Input from "../Input/Input";
-import { useState, useEffect } from "react";
-import { messages, emailRegExp } from "../../utils/config";
+import { useEffect } from "react";
+import { useValidationForm } from "../../utils/hooks/useValidationForm";
 
-const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [emailDirty, setEmailDirty] = useState(false);
-  const [passwordDirty, setPasswordDirty] = useState(false);
-  const [nameDirty, setNameDirty] = useState(false);
-  const [emailError, setEmailError] = useState(messages.emailInputError);
-  const [passwordError, setPasswordError] = useState(messages.passwordInputError);
-  const [nameError, setNameError] = useState(messages.nameInputError);
-  const [formValid, setFormValid] = useState(false);
+const Register = (props) => {
+  const {values, errors, isValid, handleChange } = useValidationForm();
 
   useEffect(() => {
-    if (emailError || passwordError || nameError) {
-      setFormValid(false)
-    } else {
-      setFormValid(true)
-    }
-  }, [emailError, passwordError, nameError])
+    props.resetResponseErrors();
+  }, []);
 
-
-  const emailHandler = (e) => {
-    setEmail(e.target.value)
-    if (!emailRegExp.test(String(e.target.value).toLocaleLowerCase())) {
-      setEmailError(messages.emailInputError)
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.resetResponseErrors();
+    if (props.signUp) {
+      props.signUp(values);
     } else {
-      setEmailError('')
+      props.signIn(values.email, values.password, values.name);
     }
   }
-
-  const passwordHandler = (e) => {
-    setPassword(e.target.value)
-    if (e.target.value.length < 4 || e.target.value.length > 10) {
-      setPasswordError(messages.passwordInputError)
-      if (!e.target.value) {
-        setPasswordError(messages.passwordInputError)
-      }
-    } else {
-      setPasswordError('')
-    }
-  }
-
-  const nameHandler = (e) => {
-    setName(e.target.value)
-    if (e.target.value.length < 2) {
-      setNameError(messages.nameInputError)
-      if (!e.target.value) {
-        setNameError(messages.nameInputError)
-      }
-    } else {
-      setNameError('')
-    }
-  }
-
-  const blurHandler = (e) => {
-    switch (e.target.name) {
-      case 'email':
-        setEmailDirty(true);
-        break;
-      case 'password':
-        setPasswordDirty(true);
-        break;
-      case 'name':
-        setNameDirty(true);
-        break;
-      default:
-    }
-  }
-
   return (
     <div className="register">
       <Logo />
       <Greeting text="Добро пожаловать!" />
-      <form className="register__form" noValidate>
-        <Input
+      <form className="register__form" onSubmit={handleSubmit} noValidate>
+        <label className="register__form_label">
+          Имя
+        </label>
+        <input
+          className="register__form_input"
           type="text"
-          required={true}
+          required
           autoComplete="on"
           name="name"
           minLength="2"
-          maxLength="20"
+          maxLength="30"
           placeholder="Введите имя"
           id="profile-name"
-          label="Имя"
-          value={name}
-          onBlur={e => blurHandler(e)}
-          onChange={e => nameHandler(e)}
+          value={values.name}
+          onChange={handleChange}
         />
-        {(nameDirty && nameError) && <span className="register__form_error">{nameError}</span>}
-        <Input
+        <span className="register__form_error">{errors.name || ''}</span>
+        <label className="register__form_label">
+          E-mail
+        </label>
+        <input
+          className="register__form_input"
           type="email"
-          required={true}
+          required
           autoComplete="on"
           name="email"
           placeholder="Введите email"
           id="profile-email"
-          label="E-mail"
-          value={email}
-          onBlur={e => blurHandler(e)}
-          onChange={e => emailHandler(e)}
+          value={values.email}
+          onChange={handleChange}
         />
-        {(emailDirty && emailError) && <span className="register__form_error">{emailError}</span>}
-        <Input
+        <span className="register__form_error">{errors.email || ''}</span>
+        <label className="register__form_label">
+          Пароль
+        </label>
+        <input
+          className="register__form_input"
           type="password"
-          required={true}
+          required
           autoComplete="on"
           name="password"
           minLength="4"
           maxLength="10"
           placeholder="Введите пароль"
           id="profile-password"
-          label="Пароль"
-          value={password}
-          onBlur={e => blurHandler(e)}
-          onChange={e => passwordHandler(e)}
+          value={values.password}
+         onChange={handleChange}
         />
-        {(passwordDirty && passwordError) && <span className="register__form_error">{passwordError}</span>}
+       <span className="register__form_error">{errors.password || ''}</span>
         <button
           className="register__form_button"
-          disabled={!formValid}
+          disabled={!isValid}
           type='submit'
         >
           Зарегистрироваться

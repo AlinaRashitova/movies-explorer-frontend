@@ -2,48 +2,58 @@ import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox"
 import { useState } from "react";
 
-const SearchForm = ({ placeholder, buttonName }) => {
-  const [searchRequest, setSearchRequest] = useState({
-    text: '',
-    filterShorts: false,
-  });
+const SearchForm = (props) => {
+  const [searchInput, setSearchInput] = useState('');
 
-  const handleChangeInput = (e) => {
-    setSearchRequest({ ...searchRequest, [e.target.name]: e.target.value });
+
+  function handleChangeSearch(e) {
+    setSearchInput(e.target.value);
+    if (props.onChangeSearchInput) {
+      props.onChangeSearchInput(e.target.value);
+    }
+
+    if (props.onChangeSavedSearchInput) {
+      props.onChangeSavedSearchInput(e.target.value);
+    }
+
   }
 
-  const handleChangeCheckbox = (e) => {
-    setSearchRequest({ ...searchRequest, [e.target.name]: e.target.checked });
-  }
-
-  const handleSubmit = (e) => {
+  function handleSubmit(e, string) {
     e.preventDefault();
+    if (props.onLoad) {
+      if (props.loadedCards.length === 0) {
+        props.onLoad(string);
+      } else {
+        props.onFilter(props.loadedCards, string);
+      }
+    } else {
+      props.onFilterSaved(props.savedCards, string)
+    }
   }
 
   return (
-    <form className="search" onSubmit={handleSubmit} noValidate>
+    <form className="search" onSubmit={(e) => {handleSubmit(e, searchInput)}} noValidate>
       <fieldset className="search-form">
         <input
           className="search-form__input"
           type="text"
-          placeholder={placeholder}
+          placeholder={props.placeholder}
           name="movie"
           minLength="2"
           required
-          value={searchRequest.text}
-          onChange={handleChangeInput}
+          value={searchInput}
+          onChange={handleChangeSearch}
         />
         <button
           className="search__button"
           type="submit">
-          {buttonName}
+          {props.buttonName}
         </button>
       </fieldset>
       <FilterCheckbox
         label="Короткометражки"
-        isChecked={searchRequest.filterShorts}
-        onCheck={handleChangeCheckbox}
-        name="filterShorts"
+        check={props.check}
+        onCheck={props.onCheck}
       />
     </form>
   )
