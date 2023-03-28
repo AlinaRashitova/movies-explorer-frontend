@@ -5,12 +5,13 @@ import Greeting from "../Greeting/Greeting";
 import { useEffect } from "react";
 import { useValidationForm } from "../../utils/hooks/useValidationForm";
 
+
 const Register = (props) => {
   const {values, errors, isValid, handleChange } = useValidationForm();
 
   useEffect(() => {
     props.resetResponseErrors();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -18,7 +19,7 @@ const Register = (props) => {
     if (props.signUp) {
       props.signUp(values);
     } else {
-      props.signIn(values.email, values.password, values.name);
+      props.signIn(values.name,values.email, values.password);
     }
   }
   return (
@@ -38,7 +39,7 @@ const Register = (props) => {
           minLength="2"
           maxLength="30"
           placeholder="Введите имя"
-          id="profile-name"
+          id="name"
           value={values.name}
           onChange={handleChange}
         />
@@ -53,7 +54,7 @@ const Register = (props) => {
           autoComplete="on"
           name="email"
           placeholder="Введите email"
-          id="profile-email"
+          id="email"
           value={values.email}
           onChange={handleChange}
         />
@@ -70,7 +71,7 @@ const Register = (props) => {
           minLength="4"
           maxLength="10"
           placeholder="Введите пароль"
-          id="profile-password"
+          id="password"
           value={values.password}
          onChange={handleChange}
         />

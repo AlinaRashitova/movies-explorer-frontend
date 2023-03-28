@@ -9,10 +9,10 @@ const Profile = (props) => {
 
   useEffect(() => {
     props.resetResponseErrors();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if(currentUser) {
+    if (currentUser) {
       setValues({
         name: currentUser.name,
         email: currentUser.email,
@@ -21,14 +21,14 @@ const Profile = (props) => {
   }, [currentUser, setValues]);
 
   useEffect(() => {
-    if(currentUser.name === values.name && currentUser.email === values.email) {
+    if (currentUser.name === values.name && currentUser.email === values.email) {
       setIsValid(false)
     }
   }, [currentUser, setIsValid, values]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.resetResponseError();
+    props.resetResponseErrors();
     props.onEditInfo(values);
   }
 
@@ -73,15 +73,21 @@ const Profile = (props) => {
         >
           Редактировать
         </button>
-      :
-          <button type="submit"
+        :
+        <button type="submit"
           className="form-profile__button form-profile__button_undisabled"
         >
           Сохранить
         </button>
       }
 
-      <button type="button" className="form-profile__button form-profile__button_view_exit" onClick={props.logOut}>Выйти из аккаунта</button>
+      <button
+        type="button"
+        className="form-profile__button form-profile__button_view_exit"
+        onClick={props.logOut}
+      >
+        Выйти из аккаунта
+      </button>
     </form>
   )
 }

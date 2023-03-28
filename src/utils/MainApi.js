@@ -8,7 +8,7 @@ function checkResponse(res) {
 }
 
 // Users
-export const register = (name, email, password) => {
+export const register = (name, password, email) => {
   return fetch(`${MAIN_URL}/signup`, {
     method: "POST",
     headers: {
@@ -78,19 +78,7 @@ export const editUserInfo = (data) => {
 }
 
 // Movies
-export const addMovie = ({
-  country,
-  director,
-  duration,
-  year,
-  description,
-  image,
-  trailerLink,
-  thumbnail,
-  movieId,
-  nameRU,
-  nameEn
-}) => {
+export const addCard = (inputValues) => {
   return fetch(`${MAIN_URL}/movies`, {
     method: "POST",
     headers: {
@@ -98,17 +86,17 @@ export const addMovie = ({
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      thumbnail,
-      movieId,
-      nameRU,
-      nameEn
+      country: inputValues.country,
+      director: inputValues.director,
+      duration: inputValues.duration,
+      year: inputValues.year,
+      description: inputValues.description,
+      image: "https://api.nomoreparties.co/" + inputValues.image.url,
+      trailerLink: inputValues.trailerLink,
+      thumbnail: "https://api.nomoreparties.co/" + inputValues.image.url,
+      movieId: String(inputValues.id),
+      nameRU: inputValues.nameRU,
+      nameEN: inputValues.nameEN,
     })
   })
     .then(checkResponse);

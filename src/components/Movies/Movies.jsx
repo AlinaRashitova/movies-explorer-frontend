@@ -3,39 +3,40 @@ import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import ButtonMore from '../ButtonMore/ButtonMore';
 import { useEffect } from 'react';
-
-import { moviesArray } from "../../utils/constants";
+import React from 'react';
+import "./Movies.css";
 
 const Movies = (props) => {
-
-  useEffect(() => {
-    props.resetNothingShow();
-    props.onChangeSavedSearchInput("");
-  }, [])
+  useEffect(() => props.reset(), []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleClickButtonMore() {
-    props.onRenderMovies(props.filteredMovies, props.showedMovies, props.countMovies.more);
+    props.onRenderMovies(props.filteredSavedCards, props.showedCards, props.countCardsShow.more);
   }
 
-  return (
+  const moviesCardList = () =>
     <>
+      <MoviesCardList
+        showedCards={props.showedCards}
+        onCardDelete={props.onCardDelete}
+        onCardLike={props.onCardLike}
+        savedCards={props.savedCards} />
+      {props.filteredSavedCards > 0 && props.showedCards > 0 && <ButtonMore handleClick={handleClickButtonMore} />}
+    </>
+
+  return (
+    <section className="movies">
       <SearchForm
         placeholder="Фильм"
         buttonName="Найти"
+        onLoad={props.onLoad}
+        isChecked={props.isChecked}
+        onCheck={props.onCheck}
       />
-      {props.isLoading
-        ? <Preloader />
-        :
-        <>
-          <MoviesCardList
-            moviesArray={moviesArray}
-            savedMovies={false}
-          />
-          {props.filteredMovies.length > 0 && props.showedMovies.length > 0 && !props.nothingShow &&
-          <ButtonMore handleClick={handleClickButtonMore}/>}
-        </>
+      {
+        props.isLoading ? <Preloader /> :
+          props.showedCards.length > 0 ? moviesCardList() : <span className="movies__span">Ничего не найдено</span>
       }
-    </>
+    </section>
   )
 }
 

@@ -24,7 +24,7 @@ import {
   checkToken,
   getUserInfo,
   editUserInfo,
-  addMovie,
+  addCard,
   getMovies,
   deleteMovie
 } from "../../utils/MainApi";
@@ -33,30 +33,17 @@ const App = () => {
   const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAuthChecked, setIsAuthChecked] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
-  const [savedMovies, setSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
-  const [showedMovies, setShowedMovies] = useState([]);
-  const [loadedMovies, setLoadedMovies] = useState([]);
-
-  // Состояние чекбокса SearchForm
-  const [isChecked, setIsChecked] = useState(false);
-
-  // Пустой результат поиска
-  const [nothingShow, setNothingShow] = useState(false);
-
-  // Состояние строки поиска в SavedMovies
-  const [savedSearchInput, setSavedSearchInput] = useState('');
+  const [showedCards, setShowedCards] = useState([]);
+  const [countCardsShow, setCountCardsShow] = useState({});
 
   // Состояние ширины вьюпорта и количество карточек для рендера
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [countMoviesShow, setCountMoviesShow] = useState({});
 
   //Состояние ответа сервера на запросы к MainApi
-  const [responseError, setResponseError] = useState({});
+  const [responseError, setResponseError] = useState("");
+
 
   const isHeaderVisible = (location.pathname === paths.main) ||
     (location.pathname === paths.movies) ||
@@ -68,6 +55,10 @@ const App = () => {
     (location.pathname === paths.savedMovies);
 
   useEffect(() => {
+    handleCheckToken()
+  }, []);
+
+  useEffect(() => {
     if (isLoggedIn) {
       getUserInfo()
         .then(user => setCurrentUser(user))
@@ -76,7 +67,7 @@ const App = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    handleCheckLogin();
+    handleCheckToken();
     window.addEventListener('resize', () => {
       setTimeout(setWindowWidth(window.innerWidth), 2000)
     });
@@ -89,128 +80,55 @@ const App = () => {
 
   useEffect(() => {
     if (windowWidth >= 1200) {
-      setCountMoviesShow({ renderMovies: 16, moreMovies: 4 });
+      setCountCardsShow({ renderMovies: 16, moreMovies: 4 });
     } else if (windowWidth > 900 && window.innerWidth < 1200) {
-      setCountMoviesShow({ renderMovies: 12, moreMovies: 3 });
+      setCountCardsShow({ renderMovies: 12, moreMovies: 3 });
     } else if (windowWidth > 600 && window.innerWidth < 900) {
-      setCountMoviesShow({ renderMovies: 8, moreMovies: 2 });
+      setCountCardsShow({ renderMovies: 8, moreMovies: 2 });
     } else {
-      setCountMoviesShow({ renderMovies: 5, moreMovies: 2 });
+      setCountCardsShow({ renderMovies: 5, moreMovies: 2 });
     }
   }, [windowWidth]);
 
-  function resetNothingShow() {
-    setNothingShow(false);
-  }
-
-  function changeSavedSearchInput(value) {
-    setSavedSearchInput(value);
-  }
-
-  // Загрузка карточек с MoviesApi
-  function loadMovies(string, check) {
-    setIsLoading(true);
-    moviesApi.getMovies()
-      .then((res) => {
-        setLoadedMovies(res);
-        filterMovie(res, string, check);
-        setIsLoading(false);
-      })
-      .catch(err => console.log(err));
-  }
-
-  // Фильтр карточек на Movies
-  function filterMovie(arr, string) {
-    const str = string.toLowerCase();
-    const regExp = new RegExp(`${str}`, 'g');
-    let movies = [];
-    movies = arr.filter((card) => {
-      return (String(movie.nameRU).toLowerCase().match(regExp) ||
-        String(movie.nameEN).toLowerCase().match(regExp) ||
-        String(movie.director).toLowerCase().match(regExp));
-    })
-    if (movies.length === 0) {
-      setNothingShow(true);
-      setShowedMovies([]);
-    } else {
-      setNothingShow(false);
-      localStorage.setItem('filteredMovies', JSON.stringify(movies));
-      if (isChecked) {
-        const movies = JSON.parse(localStorage.filteredMovies).filter((item) => item.duration < 40);
-        setShowedMovies(movies);
-      } else {
-        renderMovies(movies, [], countMoviesShow.show);
-      }
-    }
-  }
-
-  // Фильтр карточек на SavedMovies
-  function filterSavedMovie(arr, string) {
-    const str = string.toLowerCase();
-    const regExp = new RegExp(`${str}`, 'g');
-    let movies = [];
-    movies = arr.filter((card) => {
-      return (String(movie.nameRU).toLowerCase().match(regExp) ||
-        String(movie.nameEN).toLowerCase().match(regExp) ||
-        String(movie.director).toLowerCase().match(regExp));
-    })
-    if (movies.length === 0) {
-      setNothingShow(true);
-    } else {
-      setNothingShow(false);
-      setFilteredSavedMovies(movies);
-    }
-  }
-
-
   function handleRegister(data) {
-    register(data.email, data.name, data.password)
-      .then(() => {
-        handleLogin(data.email, data.password)
-      })
-      .catch((err) => {
-        if (err.indexOf === 409) {
-          setResponseError({ error: messages.emailError });
-        } else {
-          setResponseError({ error: messages.registrationError });
+    register(data.name, data.password, data.email)
+      .then((res) => {
+        if (res.status !== 400) {
+          handleLogin(data.email, data.password)
         }
       })
+      .catch(() => setResponseError(messages.failedError))
   }
 
   function handleLogin(email, password) {
     login(email, password)
-      .then(() => {
-        setIsLoggedIn(true);
-      })
-      .catch((err) => {
-        if (err.indexOf === 401) {
-          setResponseError({ error: messages.loginError });
-        } else {
-          setResponseError({ error: messages.registrationError });
+      .then((data) => {
+        if (data.token) {
+          setIsLoggedIn(true);
+          setResponseError("");
         }
       })
+      .catch(() => setResponseError(messages.failedError))
   }
 
   function handleEditUserInfo(data) {
     editUserInfo(data)
       .then((res) => {
         setCurrentUser({ name: res.name, email: res.email, _id: res._id });
-        getSavedMovies();
-        setResponseError({ message: messages.successMessage });
+        setResponseError(messages.successMessage);
       })
       .catch((err) => {
-        if (err.indexOf === 409) {
-          setResponseError({ error: messages.emailError });
+        if (err.status === 409) {
+          setResponseError(messages.emailError);
         } else {
-          setResponseError({ error: messages.registrationError });
+          setResponseError(messages.editUserInfoError);
         }
       })
   }
 
-  function handleCheckLogin() {
-    setIsAuthChecked(true);
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
+  function handleCheckToken() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
       checkToken(jwt)
         .then((res) => {
           if (res) {
@@ -218,39 +136,93 @@ const App = () => {
           }
         })
         .catch(err => console.log(err))
-        .finally(() => setIsAuthChecked(false));
-    } else {
-      setIsAuthChecked(false);
     }
   }
 
   function handleLogOut() {
     setIsLoggedIn(false);
     localStorage.removeItem('jwt');
+    setShowedCards([]);
+  }
+
+  function handleCardLike(card) {
+    return addCard(card)
+      .then((res) => {
+        card.isLiked = true;
+        card.savedMovieId = res._id;
+      })
+      .catch(err => console.log(err));
+  }
+
+  // Загрузка карточек с MoviesApi
+  function loadMovies(string, onlyShortMovies) {
+    setIsLoading(true);
+    moviesApi.getMovies()
+      .then((res) => {
+        setIsLoading(false);
+        getMovies()
+          .then((savedMoviesArr) => {
+            filterMovie(res.map((obj) => {
+              const likedMovie = savedMoviesArr.find(item => item.movieId === obj.id);
+              return {
+                ...obj,
+                imageUrl: "https://api.nomoreparties.co" + obj.image.url,
+                ...(likedMovie) && { isLiked: true, savedMovieId: likedMovie._id }
+              }
+            }), string, onlyShortMovies);
+          })
+      })
+      .catch(err => console.log(err));
+  }
+
+  function loadSavedMovies(string, onlyShortMovies) {
+    setIsLoading(true);
+    getMovies()
+      .then((res) => {
+        filterMovie(res.map(obj => (
+          { ...obj, id: obj.movieId, imageUrl: obj.image, isLiked: true, savedMovieId: obj._id })),
+          string,
+          onlyShortMovies);
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err));
+  }
+
+  // Фильтр карточек на Movies
+  function filterMovie(arr, string, onlyShortMovies) {
+    let cardMatchesSearch = () => true
+    if (string) {
+      const str = string.toLowerCase();
+      const regExp = new RegExp(`${str}`, 'g');
+      cardMatchesSearch = (card) => (
+        regExp.test(String(card.nameRU).toLowerCase()) ||
+        regExp.test(String(card.nameEN).toLowerCase()) ||
+        regExp.test(String(card.director).toLowerCase())
+      );
+    }
+    let movies = [];
+    movies = arr.filter((card) => {
+      return (cardMatchesSearch(card) && (!onlyShortMovies || card.duration <= 40));
+    })
+    setShowedCards(movies);
   }
 
   function resetResponseErrors() {
-    setResponseError('');
+    setResponseError("");
   }
 
-  function getSavedMovies() {
-    getMovies()
-      .then((res) => {
-        const movies = res.filter(
-          (item => item.owner === currentUser._id)
-        )
-        setSavedMovies(movies)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+  function reset() {
+    setShowedCards([]);
   }
 
-  function deleteMovie(id) {
-    deleteMovie(id)
-      .then((res) => {
-        const movies = savedMovies.filter((movie) => movie._id !== id);
-        setSavedMovies(movies);
+  function handleCardDelete(card, deleteCard) {
+    return deleteMovie(card.savedMovieId)
+      .then(() => {
+        if (deleteCard) {
+          setShowedCards(showedCards.filter(element => element !== card));
+        } else {
+          card.isLiked = false;
+        }
       })
       .catch(err => console.log(err));
   }
@@ -271,23 +243,13 @@ const App = () => {
                   <AuthorizedComponent
                     isLoggedIn={isLoggedIn}
                     component={<Movies
-                      onSubmit={loadMovies}
                       isLoading={isLoading}
-                      onDelete={deleteMovie}
-                      filteredMovies={filteredMovies}
-                      showedMovies={showedMovies}
-                      countMovies={countMoviesShow}
-                      loadedMovies={loadedMovies}
-                      savedMovies={savedMovies}
-                      /*onRenderMovies={renderMovies}
-                      onLoad={onLoad}
-                      onSave={onSave}*/
-                      onFilter={filterMovie}
-                      isAuthChecked={isAuthChecked}
-                      check={isChecked}
-                      nothingShow={nothingShow}
-                      resetNothingShow={resetNothingShow}
-                      onChangeSavedSearchInput={changeSavedSearchInput}
+                      onLoad={loadMovies}
+                      reset={reset}
+                      countCards={countCardsShow}
+                      showedCards={showedCards}
+                      onCardLike={handleCardLike}
+                      onCardDelete={handleCardDelete}
                     />}
                     pathToRedirect={paths.main}
                   />
@@ -301,7 +263,11 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                     component={<SavedMovies
                       isLoading={isLoading}
-                      onDelete={deleteMovie}
+                      onLoad={loadSavedMovies}
+                      reset={reset}
+                      countCards={countCardsShow}
+                      showedCards={showedCards}
+                      onCardDelete={handleCardDelete}
                     />}
                     pathToRedirect={paths.main}
                   />
@@ -315,8 +281,6 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                     component={<Profile
                       logOut={handleLogOut}
-                      isLoggedIn={isLoggedIn}
-                      isAuthChecked={isAuthChecked}
                       onEditInfo={handleEditUserInfo}
                       responseError={responseError}
                       resetResponseErrors={resetResponseErrors}
@@ -347,7 +311,7 @@ const App = () => {
                   <UnauthorizedComponent
                     isLoggedIn={isLoggedIn}
                     component={<Register
-                      signUpn={handleRegister}
+                      signUp={handleRegister}
                       responseError={responseError}
                       resetResponseErrors={resetResponseErrors}
                     />}

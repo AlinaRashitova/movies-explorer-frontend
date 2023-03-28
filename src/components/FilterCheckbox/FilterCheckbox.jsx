@@ -1,16 +1,15 @@
 import "./FilterCheckbox.css";
 
-const FilterCheckbox = ({ label, isChecked, onCheck, name }) => {
+const FilterCheckbox = (props) => {
   return (
     <fieldset className="checkbox">
-        <input
+      <input
         className="checkbox__input"
         type="checkbox"
-        checked={isChecked}
-        onChange={onCheck}
-        name={name}
-        />
-      <p className="checkbox__text">{label}</p>
+        name="shorts"
+        onChange={e => props.onChange(e.target.checked)}
+      />
+      <p className="checkbox__text">{props.label}</p>
     </fieldset>
   )
 }

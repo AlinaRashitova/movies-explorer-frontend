@@ -9,9 +9,10 @@ export const paths = {
 
 export const messages = {
   loginError: 'Неправильно указан email или пароль',
-  registrationError: 'При регистрации пользователя произошла ошибка',
+  editUserInfoError: 'При обновлении профиля произошла ошибка',
   successMessage: 'Данные успешно обновлены',
   emailError: 'Пользователь с таким email уже существует',
+  failedError: 'Что-то пошло не так...',
 }
 
 export const MAIN_URL = 'http://localhost:3000';
