@@ -35,14 +35,18 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [showedCards, setShowedCards] = useState([]);
-  const [countCardsShow, setCountCardsShow] = useState({});
 
-  // Состояние ширины вьюпорта и количество карточек для рендера
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // Состояние количества показываемых карточек
+  const [showedCards, setShowedCards] = useState();
+  const [allCards, setAllCards] = useState([]);
 
-  //Состояние ответа сервера на запросы к MainApi
-  const [responseError, setResponseError] = useState("");
+  // Состояние количества карточек для рендера при нажатии кнопки "Еще"
+  const [countCardsAddMore, setCountCardsAddMore] = useState();
+
+  const [countCardsInitialLoad, setCountCardsInitialLoad] = useState();
+
+  // Состояние ответа сервера на запросы к MainApi
+  const [responseMessage, setResponseMessage] = useState({});
 
 
   const isHeaderVisible = (location.pathname === paths.main) ||
@@ -54,50 +58,65 @@ const App = () => {
     (location.pathname === paths.movies) ||
     (location.pathname === paths.savedMovies);
 
-  useEffect(() => {
-    handleCheckToken()
-  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
       getUserInfo()
-        .then(user => setCurrentUser(user))
-        .catch(err => console.log(err))
+        .then(user => {
+          setCurrentUser(user);
+          setResponseMessage({});
+        })
+        .catch(() => setResponseMessage({ error: messages.failedError }))
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    handleCheckToken();
-    window.addEventListener('resize', () => {
-      setTimeout(setWindowWidth(window.innerWidth), 2000)
-    });
-    return () => {
-      window.removeEventListener('resize', () => {
-        setTimeout(setWindowWidth(window.innerWidth), 2000)
-      });
+  function adaptCountCards() {
+    if (window.innerWidth < 750) {
+      setCountCardsAddMore(2);
+      setCountCardsInitialLoad(5);
+    } else if (window.innerWidth < 1030) {
+      setCountCardsAddMore(2);
+      setCountCardsInitialLoad(8);
+    } else if (window.innerWidth < 1290) {
+      setCountCardsAddMore(3);
+      setCountCardsInitialLoad(12);
+    } else {
+      setCountCardsAddMore(4);
+      setCountCardsInitialLoad(12);
     }
-  }, []);
+  }
+
+  let timeOutHandler;
+
+  function onResize() {
+    clearTimeout(timeOutHandler);
+    timeOutHandler = setTimeout(adaptCountCards, 2000);
+  }
 
   useEffect(() => {
-    if (windowWidth >= 1200) {
-      setCountCardsShow({ renderMovies: 16, moreMovies: 4 });
-    } else if (windowWidth > 900 && window.innerWidth < 1200) {
-      setCountCardsShow({ renderMovies: 12, moreMovies: 3 });
-    } else if (windowWidth > 600 && window.innerWidth < 900) {
-      setCountCardsShow({ renderMovies: 8, moreMovies: 2 });
-    } else {
-      setCountCardsShow({ renderMovies: 5, moreMovies: 2 });
+    handleCheckToken();
+    window.addEventListener('resize', onResize);
+    adaptCountCards();
+    return () => {
+      window.removeEventListener('resize', onResize);
     }
-  }, [windowWidth]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleRegister(data) {
     register(data.name, data.password, data.email)
       .then((res) => {
         if (res.status !== 400) {
-          handleLogin(data.email, data.password)
+          handleLogin(data.email, data.password);
+          setResponseMessage({});
         }
       })
-      .catch(() => setResponseError(messages.failedError))
+      .catch((err) => {
+        if (err.status === 409) {
+          setResponseMessage({ error: messages.emailError });
+        } else {
+          setResponseMessage({ error: messages.registerError });
+        }
+      })
   }
 
   function handleLogin(email, password) {
@@ -105,23 +124,29 @@ const App = () => {
       .then((data) => {
         if (data.token) {
           setIsLoggedIn(true);
-          setResponseError("");
+          setResponseMessage({});
         }
       })
-      .catch(() => setResponseError(messages.failedError))
+      .catch((err) => {
+        if (err.status === 401) {
+          setResponseMessage({ error: messages.loginError });
+        } else {
+          setResponseMessage({ error: messages.registerError });
+        }
+      })
   }
 
   function handleEditUserInfo(data) {
     editUserInfo(data)
       .then((res) => {
         setCurrentUser({ name: res.name, email: res.email, _id: res._id });
-        setResponseError(messages.successMessage);
+        setResponseMessage({ message: messages.successMessage });
       })
       .catch((err) => {
         if (err.status === 409) {
-          setResponseError(messages.emailError);
+          setResponseMessage({ error: messages.emailError });
         } else {
-          setResponseError(messages.editUserInfoError);
+          setResponseMessage({ error: messages.editUserInfoError });
         }
       })
   }
@@ -134,14 +159,16 @@ const App = () => {
           if (res) {
             setIsLoggedIn(true);
           }
+          setResponseMessage({});
         })
-        .catch(err => console.log(err))
+        .catch(() => setResponseMessage({ error: messages.failedError }));
     }
   }
 
   function handleLogOut() {
     setIsLoggedIn(false);
     localStorage.removeItem('jwt');
+    localStorage.removeItem('initialValues');
     setShowedCards([]);
   }
 
@@ -150,8 +177,22 @@ const App = () => {
       .then((res) => {
         card.isLiked = true;
         card.savedMovieId = res._id;
+        setResponseMessage({});
       })
-      .catch(err => console.log(err));
+      .catch(() => setResponseMessage({ error: messages.cardLikeError }));
+  }
+
+  function handleCardDelete(card, deleteCard) {
+    return deleteMovie(card.savedMovieId)
+      .then(() => {
+        if (deleteCard) {
+          setShowedCards(showedCards.filter(element => element !== card));
+        } else {
+          card.isLiked = false;
+        }
+        setResponseMessage({});
+      })
+      .catch(() => setResponseMessage({ error: messages.cardDeleteError }));
   }
 
   // Загрузка карточек с MoviesApi
@@ -159,10 +200,10 @@ const App = () => {
     setIsLoading(true);
     moviesApi.getMovies()
       .then((res) => {
-        setIsLoading(false);
         getMovies()
           .then((savedMoviesArr) => {
-            filterMovie(res.map((obj) => {
+            setIsLoading(false);
+            const movies = filterMovie(res.map((obj) => {
               const likedMovie = savedMoviesArr.find(item => item.movieId === obj.id);
               return {
                 ...obj,
@@ -170,9 +211,20 @@ const App = () => {
                 ...(likedMovie) && { isLiked: true, savedMovieId: likedMovie._id }
               }
             }), string, onlyShortMovies);
+            localStorage.setItem("initialValues", JSON.stringify({
+              searchStringInitial: string,
+              isCheckedInitial: onlyShortMovies,
+              moviesInitial: movies
+            }))
           })
+          .catch((e) => { throw e })
+        setResponseMessage({});
+      }
+      )
+      .catch(() => {
+        setIsLoading(false);
+        setResponseMessage({ error: messages.loadMoviesError });
       })
-      .catch(err => console.log(err));
   }
 
   function loadSavedMovies(string, onlyShortMovies) {
@@ -184,8 +236,12 @@ const App = () => {
           string,
           onlyShortMovies);
         setIsLoading(false);
+        setResponseMessage({});
       })
-      .catch(err => console.log(err));
+      .catch(() => {
+        setIsLoading(false);
+        setResponseMessage({ error: messages.loadMoviesError });
+      })
   }
 
   // Фильтр карточек на Movies
@@ -204,27 +260,28 @@ const App = () => {
     movies = arr.filter((card) => {
       return (cardMatchesSearch(card) && (!onlyShortMovies || card.duration <= 40));
     })
-    setShowedCards(movies);
+    if (movies.length === 0 && !string) {
+      setShowedCards(undefined)
+    } else {
+      sliceCards(movies)
+    }
+    return movies;
   }
 
-  function resetResponseErrors() {
-    setResponseError("");
+  function sliceCards(movies) {
+    setShowedCards(movies.slice(0, countCardsInitialLoad));
+    setAllCards(movies);
   }
 
   function reset() {
-    setShowedCards([]);
+    setShowedCards(undefined);
+    setResponseMessage({});
   }
 
-  function handleCardDelete(card, deleteCard) {
-    return deleteMovie(card.savedMovieId)
-      .then(() => {
-        if (deleteCard) {
-          setShowedCards(showedCards.filter(element => element !== card));
-        } else {
-          card.isLiked = false;
-        }
-      })
-      .catch(err => console.log(err));
+  function renderMovies() {
+    if (allCards.length > countCardsAddMore) {
+      setShowedCards(allCards.slice(0, showedCards.length + countCardsAddMore));
+    }
   }
 
   return (
@@ -246,12 +303,16 @@ const App = () => {
                       isLoading={isLoading}
                       onLoad={loadMovies}
                       reset={reset}
-                      countCards={countCardsShow}
+                      allCards={allCards}
+                      onRenderMovies={renderMovies}
                       showedCards={showedCards}
+                      setShowedCards={setShowedCards}
                       onCardLike={handleCardLike}
                       onCardDelete={handleCardDelete}
+                      sliceCards={sliceCards}
+                      responseMessage={responseMessage}
                     />}
-                    pathToRedirect={paths.main}
+                    pathToRedirect={paths.movies}
                   />
                 }
               />
@@ -265,11 +326,11 @@ const App = () => {
                       isLoading={isLoading}
                       onLoad={loadSavedMovies}
                       reset={reset}
-                      countCards={countCardsShow}
                       showedCards={showedCards}
                       onCardDelete={handleCardDelete}
+                      responseMessage={responseMessage}
                     />}
-                    pathToRedirect={paths.main}
+                    pathToRedirect={paths.savedMovies}
                   />
                 }
               />
@@ -282,8 +343,8 @@ const App = () => {
                     component={<Profile
                       logOut={handleLogOut}
                       onEditInfo={handleEditUserInfo}
-                      responseError={responseError}
-                      resetResponseErrors={resetResponseErrors}
+                      responseMessage={responseMessage}
+                      reset={reset}
                     />}
                     pathToRedirect={paths.main}
                   />
@@ -297,8 +358,8 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                     component={<Login
                       signIn={handleLogin}
-                      responseError={responseError}
-                      resetResponseErrors={resetResponseErrors}
+                      responseMessage={responseMessage}
+                      reset={reset}
                     />}
                     pathToRedirect={paths.movies}
                   />
@@ -312,8 +373,8 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                     component={<Register
                       signUp={handleRegister}
-                      responseError={responseError}
-                      resetResponseErrors={resetResponseErrors}
+                      responseMessage={responseMessage}
+                      reset={reset}
                     />}
                     pathToRedirect={paths.movies}
                   />

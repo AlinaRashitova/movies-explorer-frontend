@@ -1,17 +1,22 @@
 import "./FilterCheckbox.css";
 
 const FilterCheckbox = (props) => {
+  function handleClick(e) {
+    props.setIsChecked(e.target.checked);
+  }
+
   return (
-    <fieldset className="checkbox">
+    <div className="checkbox">
       <input
-        className="checkbox__input"
         type="checkbox"
+        className={`checkbox__input ${props.isChecked && "checkbox__input_active"}`}
         name="shorts"
-        onChange={e => props.onChange(e.target.checked)}
+        id="shortMovies"
+        onClick={handleClick}
       />
-      <p className="checkbox__text">{props.label}</p>
-    </fieldset>
+      <label htmlFor="shortMovies" className="checkbox__label">{props.label}</label>
+    </div>
   )
 }
 
-export default FilterCheckbox
+export default FilterCheckbox;

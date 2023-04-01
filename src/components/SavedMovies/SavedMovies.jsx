@@ -27,9 +27,12 @@ const SavedMovies = (props) => {
         onLoad={props.onLoad}
         isChecked={props.isChecked}
         onCheck={props.onCheck}
+        responseMessage={props.responseMessage}
       />
-      {props.isLoading ? <Preloader /> :
-        props.showedCards.length > 0 ? moviesSavedCardList() : <span className="saved-movies__span">Ничего не найдено</span>}
+      {props.isLoading
+        ? <Preloader />
+        : moviesSavedCardList()
+      }
     </section>
   )
 }

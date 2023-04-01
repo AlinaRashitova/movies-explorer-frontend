@@ -1,8 +1,8 @@
 import "./ButtonMore.css";
 
-const ButtonMore = ({ handleCLick }) => {
+const ButtonMore = ({ handleClick }) => {
   return (
-    <button className="button-more" onClick={handleCLick}>
+    <button className="button-more" onClick={handleClick}>
       Ещё
     </button>
   )

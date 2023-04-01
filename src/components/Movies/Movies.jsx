@@ -2,15 +2,25 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import ButtonMore from '../ButtonMore/ButtonMore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
-import "./Movies.css";
 
 const Movies = (props) => {
-  useEffect(() => props.reset(), []) // eslint-disable-line react-hooks/exhaustive-deps
+  const [isCheckedInitial, setIsCheckedInitial] = useState(false);
+  const [searchStringInitial, setSearchStringInitial] = useState('');
+
+  useEffect(() => {
+    props.reset()
+    const initialValues = JSON.parse(localStorage.getItem("initialValues"));
+    if (initialValues) {
+      setSearchStringInitial(initialValues.searchStringInitial);
+      setIsCheckedInitial(initialValues.isCheckedInitial);
+      props.sliceCards(initialValues.moviesInitial)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleClickButtonMore() {
-    props.onRenderMovies(props.filteredSavedCards, props.showedCards, props.countCardsShow.more);
+    props.onRenderMovies();
   }
 
   const moviesCardList = () =>
@@ -19,8 +29,9 @@ const Movies = (props) => {
         showedCards={props.showedCards}
         onCardDelete={props.onCardDelete}
         onCardLike={props.onCardLike}
-        savedCards={props.savedCards} />
-      {props.filteredSavedCards > 0 && props.showedCards > 0 && <ButtonMore handleClick={handleClickButtonMore} />}
+        savedCards={props.savedCards}
+      />
+      {(props.showedCards && props.showedCards.length < props.allCards.length) && <ButtonMore handleClick={handleClickButtonMore} />}
     </>
 
   return (
@@ -29,12 +40,14 @@ const Movies = (props) => {
         placeholder="Фильм"
         buttonName="Найти"
         onLoad={props.onLoad}
-        isChecked={props.isChecked}
-        onCheck={props.onCheck}
+        isCheckedInitial={isCheckedInitial}
+        searchStringInitial={searchStringInitial}
+        responseMessage={props.responseMessage}
       />
       {
-        props.isLoading ? <Preloader /> :
-          props.showedCards.length > 0 ? moviesCardList() : <span className="movies__span">Ничего не найдено</span>
+        props.isLoading
+          ? <Preloader />
+          : moviesCardList()
       }
     </section>
   )

@@ -81,3 +81,14 @@
     padding-left: 70px;
   }
 }
+
+.search-form__response-error {
+  display: block;
+  margin-bottom: 10px;
+  height: 32px;
+  color: #EE3465;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  margin-top: 20px;
+}
