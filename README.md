@@ -1,8 +1,8 @@
 # movies-explorer-frontend
 Фронтенд проекта Movies Explorer на React.js - сервис по управлению собственной коллекцией фильмов.
 ***
-## [Ссылка на сайт](movie.alinarashitova.nomoredomains.work)
-
+## Ссылка на сайт
+movie.alinarashitova.nomoredomains.work
 ## [Сгенерированный макет](https://drive.google.com/file/d/1XHNxzwLKVgzeEqH29udMmDWCsOCZmqUV/view?usp=sharing)
 ***
 ### Используемые технологии (Стек проекта):
@@ -28,12 +28,15 @@
 * Live-валидация
 * Обработка ошибок при запросе от API
 ***
-## Инструкция по развёртыванию
-Склонировать репозиторий
-git clone https://github.com/AlinaRashitova/movies-explorer-frontend
+### Инструкция по развёртыванию
+* Склонировать репозиторий
 
-Выполнить команду
-npm i
+```git clone https://github.com/AlinaRashitova/movies-explorer-frontend```
 
-Развернуть локальный сервер с помощью команды
-npm start
+* Выполнить команду
+
+```npm i```
+
+* Развернуть локальный сервер с помощью команды
+
+```npm start```
