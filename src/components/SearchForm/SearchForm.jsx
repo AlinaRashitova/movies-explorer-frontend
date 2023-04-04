@@ -1,50 +1,58 @@
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox"
-import { useState } from "react";
+import { useValidationForm } from "../../utils/hooks/useValidationForm";
+import { useEffect, useState } from "react";
+import { useRef } from "react";
 
-const SearchForm = ({ placeholder, buttonName }) => {
-  const [searchRequest, setSearchRequest] = useState({
-    text: '',
-    filterShorts: false,
-  });
+const SearchForm = (props) => {
 
-  const handleChangeInput = (e) => {
-    setSearchRequest({ ...searchRequest, [e.target.name]: e.target.value });
-  }
+  const [isChecked, setIsChecked] = useState(false);
+  const { values, isValid, handleChange } = useValidationForm();
+  const inputRef = useRef();
+  useEffect(() => setIsChecked(props.isCheckedInitial),
+    [props.isCheckedInitial]
+  )
 
-  const handleChangeCheckbox = (e) => {
-    setSearchRequest({ ...searchRequest, [e.target.name]: e.target.checked });
-  }
+  useEffect(() => { inputRef.current.dispatchEvent(new Event('change', { bubbles: true })) },
+    [props.searchStringInitial]
+  )
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
+    props.onLoad(values.movie, isChecked);
   }
 
   return (
-    <form className="search" onSubmit={handleSubmit} noValidate>
+    <form className="search" onSubmit={(e) => handleSubmit(e)} >
       <fieldset className="search-form">
         <input
+          ref={inputRef}
           className="search-form__input"
           type="text"
-          placeholder={placeholder}
+          placeholder={props.placeholder}
           name="movie"
           minLength="2"
           required
-          value={searchRequest.text}
-          onChange={handleChangeInput}
+          defaultValue={props.searchStringInitial || ''}
+          onChange={handleChange}
         />
         <button
           className="search__button"
-          type="submit">
-          {buttonName}
+          type="submit"
+          disabled={!isValid}
+        >
+          {props.buttonName}
         </button>
       </fieldset>
+      <span className="search-form__error">{isValid || "Нужно ввести ключевое слово"}</span>
       <FilterCheckbox
         label="Короткометражки"
-        isChecked={searchRequest.filterShorts}
-        onCheck={handleChangeCheckbox}
-        name="filterShorts"
+        setIsChecked={setIsChecked}
+        isChecked={isChecked}
       />
+      <span className={`search-form__response-error`}>
+        {props.responseMessage.error}
+      </span>
     </form>
   )
 }

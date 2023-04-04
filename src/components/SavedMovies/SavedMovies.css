@@ -1,0 +1,7 @@
+.saved-movies {
+  display: flex;
+  flex-direction: column;
+  row-gap: 34px;
+  align-items: center;
+}
+

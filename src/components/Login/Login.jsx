@@ -1,111 +1,82 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import "./Login.css";
 import Logo from "../Logo/Logo";
 import Greeting from "../Greeting/Greeting";
-import Input from "../Input/Input";
-import SubmitButton from "../SubmitButton/SubmitButton";
-import { useEffect, useState } from "react";
-import { messages, emailRegExp } from "../../utils/config";
+import { useValidationForm } from "../../utils/hooks/useValidationForm";
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailDirty, setEmailDirty] = useState(false);
-  const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailError, setEmailError] = useState(messages.emailInputError);
-  const [passwordError, setPasswordError] = useState(messages.passwordInputError);
-  const [formValid, setFormValid] = useState(false);
+const Login = (props) => {
+  const { values, errors, isValid, handleChange } = useValidationForm();
 
   useEffect(() => {
-    if (emailError || passwordError) {
-      setFormValid(false)
-    } else {
-      setFormValid(true)
-    }
-  }, [emailError, passwordError])
+    props.reset();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const emailHandler = (e) => {
-    setEmail(e.target.value)
-    if (!emailRegExp.test(String(e.target.value).toLocaleLowerCase())) {
-      setEmailError(messages.emailInputError)
-    } else {
-      setEmailError('')
-    }
-  }
-
-  const passwordHandler = (e) => {
-    setPassword(e.target.value)
-    if (e.target.value.length < 4 || e.target.value.length > 10) {
-      setPasswordError(messages.passwordInputError)
-      if (!e.target.value) {
-        setPasswordError(messages.passwordInputError)
-      }
-    } else {
-      setPasswordError('')
-    }
-  }
-
-  const blurHandler = (e) => {
-    switch (e.target.name) {
-      case 'email':
-        setEmailDirty(true);
-        break;
-      case 'password':
-        setPasswordDirty(true);
-        break;
-      default:
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.reset();
+    props.signIn(values.email, values.password);
   }
 
   return (
     <div className="login">
       <Logo />
       <Greeting text="Рады видеть!" />
-      <form className="login__form" noValidate>
-        <Input
+      <form className="login-form" onSubmit={handleSubmit} noValidate>
+        <label className="login-form__label">
+          E-mail
+        </label>
+        <input
+          className="login-form__input"
           type="email"
-          required={true}
+          required
           autoComplete="on"
           name="email"
           placeholder="Введите email"
           id="profile-email"
-          label="E-mail"
-          value={email}
-          onBlur={e => blurHandler(e)}
-          onChange={e => emailHandler(e)}
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          value={values.email || ''}
+          onChange={handleChange}
         />
-        {(emailDirty && emailError) && <span className="login__form_error">{emailError}</span>}
-        <Input
+        <span className="login-form__error">{errors.email || ''}</span>
+        <label className="login-form__label">
+          Пароль
+        </label>
+        <input
+          className="login-form__input"
           type="password"
-          required={true}
+          required
           minLength="4"
           maxLength="10"
           autoComplete="on"
           name="password"
           placeholder="Введите пароль"
           id="profile-password"
-          label="Пароль"
-          value={password}
-          onBlur={e => blurHandler(e)}
-          onChange={e => passwordHandler(e)}
+          value={values.password || ''}
+          onChange={handleChange}
         />
-        {(passwordDirty && passwordError) && <span className="login__form_error">{passwordError}</span>}
-        <button
-          className="login__form_button"
-          disabled={!formValid}
-          type='submit'
-        >
-          Войти
-        </button>
-        <p className="login__form_caption">
-          Ещё не зарегистрированы?
-          <Link
-            className="login__form_link"
-            to="/signup"
+        <span className="login-form__error">{errors.password || ''}</span>
+        <div className="login-form__container">
+          <span className={`login-form__response-error ${props.responseMessage.message && "login-form__response-message"}`}>
+            {props.responseMessage.error}
+          </span>
+          <button
+            className="login-form__button"
+            disabled={!isValid}
+            type='submit'
           >
-            Регистрация
-          </Link>
-        </p>
+            Войти
+          </button>
+          <p className="login-form__caption">
+            Ещё не зарегистрированы?
+            <Link
+              className="login-form__link"
+              to="/signup"
+            >
+              Регистрация
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   )

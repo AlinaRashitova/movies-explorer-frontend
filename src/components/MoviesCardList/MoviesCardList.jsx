@@ -1,15 +1,23 @@
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-const MoviesCardList = ({ moviesArray, savedMovies }) => {
+const MoviesCardList = ({ onCardLike, onCardDelete, showedCards }) => {
   return (
     <section className="movies">
       <div className="movies__container">
-      {moviesArray.map(item => (
-          <MoviesCard id={item.id} movie={item} savedMovies={savedMovies} isLiked={true}/>
-        ))}
+        {showedCards ?
+      (showedCards.length > 0
+        ? (showedCards.map(item => (
+          <MoviesCard
+            key={item.id}
+            card={item}
+            onCardDelete={onCardDelete}
+            onCardLike={onCardLike}
+          />
+        )))
+        : <span className="movies__span">Ничего не найдено</span>
+      ) : <></>}
       </div>
-      {!savedMovies && <button className="movies__button">Ещё</button>}
     </section>
   )
 }
